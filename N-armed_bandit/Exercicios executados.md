@@ -19,7 +19,7 @@ Para esse exercicio será implementado uma versão do problema N-armed bandit, o
 Foram implementados:
 * Epsilon-Greed Action Selection
 * Upper-Confidence-Bound Action Selection
-* Gradient Bandits
 * Average Value Estimation
 * Weighted Average Value Estimation
-* Initial Value Estimation 
+* Initial Value Estimation
+* Gradient Bandits
