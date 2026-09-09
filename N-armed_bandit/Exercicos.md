@@ -1,4 +1,4 @@
-### N-armed bandit
+### N-armed bandit sem associatividade (estático)
 
 Você tem a opção de realizar N ações. Cada ação possui uma recompensa pré-determinada, com algum nível de ruído. Você não sabe qual a recompensa de nenhuma das ações.
 
