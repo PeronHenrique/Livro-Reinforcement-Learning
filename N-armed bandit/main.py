@@ -6,9 +6,9 @@ STEPS: int = 1000
 
 def main():
     seed = 123
-    bandits_0_1 = [E_Bandit(n=10, epsilon=0.1, seed=seed*2+i) for i in range(BANDITS)]
-    bandits_0_01 = [E_Bandit(n=10, epsilon=0.01, seed=seed*3+i) for i in range(BANDITS)]
-    bandits_greedy = [E_Bandit(n=10, epsilon=0.0, seed=seed*1+i) for i in range(BANDITS)]
+    bandits_0_1 =       [E_Bandit(n= 10, epsilon= 0.10, seed= seed+i+BANDITS*0) for i in range(BANDITS)]
+    bandits_0_01 =      [E_Bandit(n= 10, epsilon= 0.01, seed= seed+i+BANDITS*1) for i in range(BANDITS)]
+    bandits_greedy =    [E_Bandit(n= 10, epsilon= 0.00, seed= seed+i+BANDITS*2) for i in range(BANDITS)]
     
     for bandit in bandits_greedy:
         for _ in range(STEPS):

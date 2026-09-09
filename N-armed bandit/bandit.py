@@ -11,11 +11,11 @@ class E_Bandit:
     log: dict[int, tuple[int, float]]
     step: int
 
-    def __init__(self, n: int, epsilon: float, seed: int, weight: float = 0):
+    def __init__(self, n: int, epsilon: float, seed: int, initial_value: float = 0):
         self.rng = RandomGenerator(seed)
         self.n = n
         self.values = [self.rng.normal() for _ in range(n)]
-        self.estimate = [weight * self.rng.normal() for _ in range(n)]
+        self.estimate = [initial_value for _ in range(n)]
         self.counts = [0 for _ in range(n)]
         self.epsilon = epsilon
         self.log = dict()
