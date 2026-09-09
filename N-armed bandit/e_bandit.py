@@ -1,5 +1,7 @@
 from random_generator import RandomGenerator
 
+# Class for bandit with N arms estatic values and updates estimates by average. 
+# Can receive a initial value to witch the estimate to all actions is initialized 
 class E_Bandit:
     rng: RandomGenerator
     n: int
@@ -31,11 +33,9 @@ class E_Bandit:
 
     # Execute one turn of action and updates estimate of values
     def do_action(self):
-        a: int = -1
-        if self.rng.chance(self.epsilon):
-            #explore
-            a = self.rng.integer(0, self.n - 1)
-        else:
+        #explore
+        a: int = self.rng.integer(0, self.n - 1)
+        if not self.rng.chance(self.epsilon):
             #exploit
             a = self.estimate.index(max(self.estimate))
 
