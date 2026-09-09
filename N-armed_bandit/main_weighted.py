@@ -1,7 +1,7 @@
 # python -m venv .venv
 # .venv/Scripts/Activate.ps1
 from plot import plot
-from e_greedy_weighted_bandit import E_Greedy_Weighted_Bandit
+from bandits.e_greedy_weighted_bandit import E_Greedy_Weighted_Bandit
 
 BANDITS: int = 2000
 STEPS: int = 1000
@@ -75,7 +75,7 @@ def main():
         labels,
         "Median Reward Each Step",
         "Median Reward",
-        "res_wgt/median_reward.svg"
+        "res/wgt/median_reward.svg"
     )
     
     plot(
@@ -83,7 +83,7 @@ def main():
         labels,
         "Optimal Action Each Step",
         "Percentual of Optimal Action",
-        "res_wgt/optimal_action.svg"
+        "res/wgt/optimal_action.svg"
     )
 
     plot(
@@ -91,7 +91,7 @@ def main():
         labels[:3],
         "Median Reward Each Step",
         "Median Reward",
-        "res_wgt/median_reward iv=0.svg"
+        "res/wgt/median_reward iv=0.svg"
     )
 
     plot(
@@ -99,7 +99,7 @@ def main():
         labels[:3],
         "Optimal Action Each Step",
         "Percentual of Optimal Action",
-        "res_wgt/optimal_action iv=0.svg"
+        "res/wgt/optimal_action iv=0.svg"
     )
 
     plot(
@@ -107,7 +107,7 @@ def main():
         labels[3:],
         "Median Reward Each Step",
         "Median Reward",
-        "res_wgt/median_reward iv=5.svg"
+        "res/wgt/median_reward iv=5.svg"
     )
 
     plot(
@@ -115,7 +115,7 @@ def main():
         labels[3:],
         "Optimal Action Each Step",
         "Percentual of Optimal Action",
-        "res_wgt/optimal_action iv=5.svg"
+        "res/wgt/optimal_action iv=5.svg"
     )
 
     
@@ -124,7 +124,7 @@ def main():
         labels[2:4],
         "Optimal Action Each Step",
         "Percentual of Optimal Action",
-        "res_wgt/optimal_action livro.svg"
+        "res/wgt/optimal_action livro.svg"
     )
 
 

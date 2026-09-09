@@ -1,7 +1,8 @@
-from random_generator import RandomGenerator
+from .random_generator import RandomGenerator
 
 # Class for bandit with N arms estatic values and updates estimates by average. 
 # Can receive a initial value to witch the estimate to all actions is initialized 
+# Choose action based on episolon-greed method
 class E_Greedy_Average_Bandit:
     rng: RandomGenerator
     n: int
@@ -16,7 +17,7 @@ class E_Greedy_Average_Bandit:
         self.n = n
         self.values = [self.rng.normal() for _ in range(n)]
         self.optimal = self.values.index(max(self.values))
-        self.estimate = [initial_value for _ in range(n)]
+        self.estimates = [initial_value for _ in range(n)]
         self.counts = [0 for _ in range(n)]
         self.epsilon = epsilon
 
@@ -34,11 +35,11 @@ class E_Greedy_Average_Bandit:
         a: int = self.rng.integer(0, self.n - 1)
         if not self.rng.chance(self.epsilon):
             #exploit
-            a = self.estimate.index(max(self.estimate))
+            a = self.estimates.index(max(self.estimates))
 
         # do the action
         reward: float = self.reward_action(a)
 
         #update estimate
-        self.estimate[a] += (1 / self.counts[a]) * (reward - self.estimate[a])
+        self.estimates[a] += (1 / self.counts[a]) * (reward - self.estimates[a])
         return (a, reward)

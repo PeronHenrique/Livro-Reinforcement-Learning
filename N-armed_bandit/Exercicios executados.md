@@ -1,10 +1,4 @@
-<h1>Exercicios Reinforced Learning</h1>
-
-Este documento resume os exercicios feitos durante o estudo do livro.
-
-Cada exercicio será executado dentro de uma pasta. Com o nome de acordo com os capítulo a seguir.
-
-<h2>N-armed bandit</h2>
+### N-armed bandit
 
 Você tem a opção de realizar N ações. Cada ação possui uma recompensa pré-determinada, com algum nível de ruído. Você não sabe qual a recompensa de nenhuma das ações.
 
@@ -20,4 +14,12 @@ Assim o algoritmo implementado deve determinar a recompensa esperada para cada a
 
 É necessário balancear a exploração das opções com a maximação da melhor ação. A fim de explorar as opções de forma adequada, sem deixar de escolher a melhor opção.
 
-Para esse exercicio será implementado uma versão do problema N-armed bandit, onde <code>N = 10</code> e explorado a diferença entre os algoritmos ε-greedy com diferentes ε, tomando como base a solução descrita na seção 2.2 a 2.5 do livro.
+Para esse exercicio será implementado uma versão do problema N-armed bandit, onde <code>N = 10</code> e explorado a diferença entre os algoritmos ε-greedy com diferentes ε, tomando como base a solução descrita na seção 2.2 a 2.6 do livro.
+
+Foram implementados:
+* Epsilon-Greed Action Selection
+* Upper-Confidence-Bound Action Selection
+* Average Value Estimation
+* Weighted Average Value Estimation
+* Initial Value Estimation 
+* Gradient Bandits

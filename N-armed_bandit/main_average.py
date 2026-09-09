@@ -1,7 +1,7 @@
 # python -m venv .venv
 # .venv/Scripts/Activate.ps1
 from plot import plot
-from e_greedy_average_bandit import E_Greedy_Average_Bandit
+from bandits.e_greedy_average_bandit import E_Greedy_Average_Bandit
 
 BANDITS: int = 2000
 STEPS: int = 1000
@@ -32,6 +32,7 @@ def main():
     optimal_opt_0_10: list[float] = [0 for _ in range(STEPS)]
     
     for step in range(STEPS):
+        if step % (STEPS/20) == 0: print(f"{step*100/STEPS}%")
         if step % (STEPS/20) == 0: print(f"{step*100/STEPS}%")
         for bandit in bandits_0_00:
             a, r = bandit.do_action()
@@ -75,7 +76,7 @@ def main():
         labels,
         "Median Reward Each Step",
         "Median Reward",
-        "res_avg/median_reward.svg"
+        "res/avg/median_reward.svg"
     )
     
     plot(
@@ -83,7 +84,7 @@ def main():
         labels,
         "Optimal Action Each Step",
         "Percentual of Optimal Action",
-        "res_avg/optimal_action.svg"
+        "res/avg/optimal_action.svg"
     )
 
     plot(
@@ -91,7 +92,7 @@ def main():
         labels[:3],
         "Median Reward Each Step",
         "Median Reward",
-        "res_avg/median_reward iv=0.svg"
+        "res/avg/median_reward iv=0.svg"
     )
 
     plot(
@@ -99,7 +100,7 @@ def main():
         labels[:3],
         "Optimal Action Each Step",
         "Percentual of Optimal Action",
-        "res_avg/optimal_action iv=0.svg"
+        "res/avg/optimal_action iv=0.svg"
     )
 
     plot(
@@ -107,7 +108,7 @@ def main():
         labels[3:],
         "Median Reward Each Step",
         "Median Reward",
-        "res_avg/median_reward iv=5.svg"
+        "res/avg/median_reward iv=5.svg"
     )
 
     plot(
@@ -115,7 +116,7 @@ def main():
         labels[3:],
         "Optimal Action Each Step",
         "Percentual of Optimal Action",
-        "res_avg/optimal_action iv=5.svg"
+        "res/avg/optimal_action iv=5.svg"
     )
 
 

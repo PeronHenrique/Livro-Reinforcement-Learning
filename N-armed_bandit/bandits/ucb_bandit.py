@@ -1,0 +1,51 @@
+import math
+
+from .random_generator import RandomGenerator
+
+# Class for bandit with N arms estatic values and updates estimates by average. 
+# Can receive a initial value to witch the estimate to all actions is initialized 
+# Choose action based on Upper-Confidence-Bound method
+class UCB_Bandit:
+    rng: RandomGenerator
+    n: int
+    values: list[float]
+    optimal: int
+    estimates: list[float]
+    counts: list[int]
+    c: float
+
+    def __init__(self, n: int, c: float, seed: int, 
+                 initial_value: float = 0):
+        self.rng = RandomGenerator(seed)
+        self.n = n
+        self.values = [self.rng.normal() for _ in range(n)]
+        self.optimal = self.values.index(max(self.values))
+        self.estimates = [initial_value for _ in range(n)]
+        self.counts = [0 for _ in range(n)]
+        self.c = c
+
+    # Value of action + noise
+    def reward_action(self, a: int) -> float:
+        if a >= self.n:
+            raise ValueError("Action index out of range")
+
+        self.counts[a] += 1
+        return self.values[a] + self.rng.normal()
+
+    # Execute one turn of action and updates estimate of values
+    def do_action(self, step:int) -> tuple[int, float]:
+        init_actions = [i for i in range(self.n) if self.counts[i] == 0]
+        a = 0
+        if len(init_actions) != 0:
+            a = init_actions[self.rng.integer(0, len(init_actions) - 1)]
+        else:
+            ucb = [self.estimates[i] + self.c * math.sqrt(math.log(step)/self.counts[i]) 
+                   for i in range(self.n)]
+            a = ucb.index(max(ucb))
+
+        # do the action
+        reward: float = self.reward_action(a)
+
+        #update estimate
+        self.estimates[a] += (1 / self.counts[a]) * (reward - self.estimates[a])
+        return (a, reward)
