@@ -20,12 +20,4 @@ Assim o algoritmo implementado deve determinar a recompensa esperada para cada a
 
 É necessário balancear a exploração das opções com a maximação da melhor ação. A fim de explorar as opções de forma adequada, sem deixar de escolher a melhor opção.
 
-
-Para esse exercicio será implementado uma versão do problema N-armed bandit, onde <code>N = 10</code> e explorado a diferença entre os algoritmos ε-greedy com diferentes ε, tomando como base a solução descrita na seção 2.2 e 2.3 do livro.
-
-
-<h3>N-armed bandit não estacionário</h3>
-
-Nesse cenário as recompensas variam durante a execução do problema.
-
-Para esse exercicio será implementado uma versão do problema N-armed bandit, semelhante ao exercicio anterior, tomando como base a solução descrita na seção 2.4 do livro, e comparada com as soluções do exercicio anterior
+Para esse exercicio será implementado uma versão do problema N-armed bandit, onde <code>N = 10</code> e explorado a diferença entre os algoritmos ε-greedy com diferentes ε, tomando como base a solução descrita na seção 2.2 a 2.5 do livro.
