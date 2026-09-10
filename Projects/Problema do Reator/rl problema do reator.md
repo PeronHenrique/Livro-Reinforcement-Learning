@@ -1,6 +1,4 @@
-# Problema de Aprendizagem por Reforço — Operação de um Reator
-
-## 1. Descrição do problema
+# 1. Problema de Aprendizagem por Reforço — Operação de um Reator
 
 Considere um sistema de produção química baseado em um reator no qual uma matéria-prima é convertida em um produto de interesse.
 

@@ -6,6 +6,8 @@ O objetivo principal é aprender e aprofundar os conceitos de Reinforcement Lear
 
 As implementações são desenvolvidas de forma independente e podem incluir adaptações, experimentos e variações dos exemplos originais.
 
+Ao final esperasse aplicar as tecnicas e conhecimentos obtidos a alguns projetos pessoais.
+
 # Conteúdo
 
 O projeto será desenvolvido gradualmente conforme os diferentes conceitos de Reinforcement Learning forem estudados.
@@ -15,6 +17,11 @@ Entre os temas explorados (e as suas principais referências) estão:
 * Multi-Armed Bandits (Suton & Barto)
 
 A organização do projeto busca manter os exemplos e experimentos relacionados aos conceitos estudados, independentemente da fonte utilizada.
+
+Projetos pessoais:
+
+* Jogo 1010 (Criar agente capaz de jogar o jogo)
+* Problema do Reator (Adaptado do exemplo 3.1 de Suton & Barto) 
 
 # Referências
 

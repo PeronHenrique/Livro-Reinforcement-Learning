@@ -1,0 +1,42 @@
+1010/
+    ├── main.py
+    ├── print_pieces.py         # for visualizing the pieces
+    │
+    ├── Game/
+    │   ├── __init__.py
+    |   |
+    │   ├── board.py
+    │   ├── piece.py
+    │   ├── pieces.py
+    │   └── game.py
+    │
+    ├── Rendering/
+    │   ├── __init__.py
+    │   |
+    │   ├── renderer.py
+    │   ├── button.py
+    │   └── colors.py
+    │    
+    ├── Solvers/
+    │   ├── __init__.py
+    |   |
+    |   ├── DFS/
+    |   │   └── dfs_solver.py           # very, very slow
+    |   |
+    |   ├── Random/
+    |   │   └── random_solver.py
+    |   |
+    |   ├── Reinforcement_Learning/
+    |   │   ├── reinforcement learning.pdf
+    |   |
+    │   ├── solution.py
+    │   ├── move.py
+    │   └── evaluator.py
+    |
+    └── Test/
+        ├── __init__.py
+        |
+        ├── board_test.py
+        ├── piece_test.py
+        ├── evaluator_test.py
+        └── text_board.py

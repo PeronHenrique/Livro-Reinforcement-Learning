@@ -1,0 +1,2 @@
+SIZE = 10
+N_PIECES = 3
