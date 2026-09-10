@@ -5,7 +5,7 @@ from bandits.e_greedy_weighted_bandit import E_Greedy_Weighted_Bandit
 from bandits.e_greedy_average_bandit import E_Greedy_Average_Bandit
 from bandits.ucb_bandit import UCB_Bandit
 
-BANDITS: int = 2000
+BANDITS: int = 1000
 STEPS: int = 1000
 
 def main():

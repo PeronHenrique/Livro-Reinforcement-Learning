@@ -3,7 +3,7 @@
 from plot import plot
 from bandits.e_greedy_average_bandit import E_Greedy_Average_Bandit
 
-BANDITS: int = 2000
+BANDITS: int = 1000
 STEPS: int = 1000
 
 def main():
@@ -32,7 +32,6 @@ def main():
     optimal_opt_0_10: list[float] = [0 for _ in range(STEPS)]
     
     for step in range(STEPS):
-        if step % (STEPS/20) == 0: print(f"{step*100/STEPS}%")
         if step % (STEPS/20) == 0: print(f"{step*100/STEPS}%")
         for bandit in bandits_0_00:
             a, r = bandit.do_action()

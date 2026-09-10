@@ -3,7 +3,7 @@
 from plot import plot
 from bandits.e_greedy_weighted_bandit import E_Greedy_Weighted_Bandit
 
-BANDITS: int = 2000
+BANDITS: int = 1000
 STEPS: int = 1000
 
 def main():
