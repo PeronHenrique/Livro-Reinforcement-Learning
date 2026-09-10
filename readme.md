@@ -1,29 +1,27 @@
-# Reinforcement Learning: An Introduction — Sutton & Barto
+# Reinforcement Learning
 
-Projeto de estudo baseado no livro **[Reinforcement Learning: An Introduction — 2nd Edition](https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf)**, de Richard S. Sutton e Andrew G. Barto.
+Projeto de estudo dedicado ao aprendizado de Reinforcement Learning (RL) por meio da implementação prática de conceitos, algoritmos e exemplos encontrados em diferentes livros e materiais de referência sobre o tema.
 
-O objetivo deste projeto é estudar os conceitos de **Reinforcement Learning (RL)** apresentados no livro através da implementação, em Python, de alguns dos exemplos e algoritmos discutidos ao longo dos capítulos.
+O objetivo principal é aprender e aprofundar os conceitos de Reinforcement Learning através da prática, recriando e experimentando diferentes abordagens apresentadas nas referências utilizadas durante o estudo.
 
+As implementações são desenvolvidas de forma independente e podem incluir adaptações, experimentos e variações dos exemplos originais.
 
-## Conteúdo
+# Conteúdo
 
-As implementações serão organizadas de acordo com os conceitos e exemplos estudados no livro.
-Alguns dos temas abordados são:
+O projeto será desenvolvido gradualmente conforme os diferentes conceitos de Reinforcement Learning forem estudados.
 
-* Multi-Armed Bandits
-* Markov Decision Processes
-* Dynamic Programming
-* Monte Carlo Methods
-* Temporal-Difference Learning
-* SARSA
-* Q-Learning
-* Policy Gradients
-* Function Approximation
-* Reinforcement Learning com redes neurais
+Entre os temas explorados (e as suas principais referências) estão:
 
-O projeto será desenvolvido gradualmente conforme os capítulos forem estudados.
+* Multi-Armed Bandits (Suton & Barto)
 
-Cada diretório representa, quando possível, os exemplos e experimentos relacionados a um capítulo do livro.
+A organização do projeto busca manter os exemplos e experimentos relacionados aos conceitos estudados, independentemente da fonte utilizada.
+
+# Referências
+
+Durante o desenvolvimento do projeto serão utilizados diferentes livros e materiais de referência.
+
+* Livro **[Reinforcement Learning: An Introduction — 2nd Edition](https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf)**, de Richard S. Sutton e Andrew G. Barto.
+
 
 ## Reprodutibilidade
 
@@ -45,8 +43,8 @@ Isso permite testar e comparar diferentes implementações sob as mesmas condiç
 
 ## Licença
 
-Este projeto é um projeto para fins **educacionais** e tem como objetivo estudar e implementar, de forma independente, conceitos e exemplos apresentados em *Reinforcement Learning: An Introduction*.
+Este projeto é um projeto para fins **educacionais**.
 
 O código não pretende reproduzir ou distribuir o conteúdo do livro. Para a explicação completa dos conceitos, algoritmos e exemplos, consulte a obra original.
 
-O livro **Reinforcement Learning: An Introduction** e seu conteúdo permanecem sob os direitos de seus respectivos autores e editores.
+Os livros,textos e materiais utilizados e seus conteúdos permanecem sob os direitos de seus respectivos autores e editores.
