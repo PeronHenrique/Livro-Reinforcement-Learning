@@ -18,4 +18,4 @@ class RandomGenerator:
 
     # Returns a index based on a list of weights
     def choose(self, weights: list[float]) -> int:
-        return self.rng.choices(range(len(weights)), weights=weights)
+        return self.rng.choices(range(len(weights)), weights=weights)[0]

@@ -1,4 +1,4 @@
-import numpy as np
+import math
 from .random_generator import RandomGenerator
 
 # Class for Gradient bandit with N arms estatic values.
@@ -18,7 +18,7 @@ class Gradient_Bandit:
         self.n = n
         self.values = [self.rng.normal(mean=mean_value) for _ in range(n)]
         self.optimal = self.values.index(max(self.values))
-        self.preferences = [0 for _ in range(n)]
+        self.preferences = [0.0 for _ in range(n)]
         self.weight = weight
         self.baseline = 0
         self.use_baseline = use_baseline
@@ -28,14 +28,13 @@ class Gradient_Bandit:
         if a >= self.n:
             raise ValueError("Action index out of range")
 
-        self.counts[a] += 1
         return self.values[a] + self.rng.normal()
 
     def softmax_preferences(self) -> list[float]:
-        pref = np.array(self.preferences)
-        exp_preferences = np.exp(pref - np.max(pref))
-        exp_preferences = exp_preferences / np.sum(exp_preferences)
-        return exp_preferences.tolist()
+        max_pref = max(self.preferences)
+        exp_preferences = [math.exp(p - max_pref) for p in self.preferences]
+        total = sum(exp_preferences)
+        return [p / total for p in exp_preferences]
 
     # Execute one turn of action and updates estimate of values
     def do_action(self, step:int) -> tuple[int, float]:
@@ -45,13 +44,13 @@ class Gradient_Bandit:
 
         # do the action
         reward: float = self.reward_action(a)
-        self.baseline += (1/step) * (reward - self.baseline) if self.use_baseline == True else 0
+        self.baseline += (1/(step+1)) * (reward - self.baseline) if self.use_baseline == True else 0
 
         # updates preferences
         for i, h in enumerate(self.preferences):
             if i == a: 
-                h += self.weight*(reward - self.baseline)*(1-prob[i])
+                self.preferences[i] = h + self.weight*(reward - self.baseline)*(1-prob[i])
             else:
-                h -= self.weight*(reward - self.baseline)*prob[i]
+                self.preferences[i] = h - self.weight*(reward - self.baseline)*prob[i]
 
         return (a, reward)

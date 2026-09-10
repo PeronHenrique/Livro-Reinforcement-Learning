@@ -14,13 +14,13 @@ from bandits.e_greedy_weighted_bandit import E_Greedy_Weighted_Bandit
 from bandits.ucb_bandit import UCB_Bandit 
 from bandits.gradient_bandit import Gradient_Bandit
 
-BANDITS: int = 2000
+BANDITS: int = 500
 STEPS: int = 1000
 rng = random.Random(456)
 
 def random_walk_values(values: list[float]) -> None:
-    for value in values:
-        value += rng.gauss(0, 0.3)
+    for i in range(len(values)):
+        values[i] += rng.gauss(0, 0.2)
 
 
 def main():
@@ -46,27 +46,27 @@ def main():
         if step % (STEPS/20) == 0: print(f"{step*100/STEPS}%")
 
         for bandit in bandits_avg:
-            a, r = bandit.do_action(step)
+            a, r = bandit.do_action()
             median_avg[step] += r/BANDITS
-            optimal_avg[step] += 1/BANDITS if a == bandit.optimal else 0
+            optimal_avg[step] += 1/BANDITS if a == bandit.values.index(max(bandit.values)) else 0
             random_walk_values(bandit.values)
 
         for bandit in bandits_wgt:
-            a, r = bandit.do_action(step)
+            a, r = bandit.do_action()
             median_wgt[step] += r/BANDITS
-            optimal_wgt[step] += 1/BANDITS if a == bandit.optimal else 0
+            optimal_wgt[step] += 1/BANDITS if a == bandit.values.index(max(bandit.values)) else 0
             random_walk_values(bandit.values)
 
         for bandit in bandits_ucb:
             a, r = bandit.do_action(step)
             median_ucb[step] += r/BANDITS
-            optimal_ucb[step] += 1/BANDITS if a == bandit.optimal else 0
+            optimal_ucb[step] += 1/BANDITS if a == bandit.values.index(max(bandit.values)) else 0
             random_walk_values(bandit.values)
 
         for bandit in bandits_grad:
             a, r = bandit.do_action(step)
             median_grad[step] += r/BANDITS
-            optimal_grad[step] += 1/BANDITS if a == bandit.optimal else 0
+            optimal_grad[step] += 1/BANDITS if a == bandit.values.index(max(bandit.values)) else 0
             random_walk_values(bandit.values)
 
     median_values = [median_avg, median_wgt, median_ucb, median_grad]

@@ -3,7 +3,7 @@
 from plot import plot
 from bandits.gradient_bandit import Gradient_Bandit
 
-BANDITS: int = 2000
+BANDITS: int = 500
 STEPS: int = 1000
 
 def main():
@@ -75,7 +75,6 @@ def main():
             "a=0.1 - Baseline=T - Mean Value=4",
             "a=0.1 - Baseline=T - Mean Value=0",
             "a=0.4 - Baseline=T - Mean Value=4",
-            "a=0.1 - Baseline=T - Mean Value=4",
             "a=0.1 - Baseline=F - Mean Value=4",
             "a=0.1 - Baseline=F - Mean Value=0",
             "a=0.4 - Baseline=F - Mean Value=4",
