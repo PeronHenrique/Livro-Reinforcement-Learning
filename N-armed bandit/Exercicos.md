@@ -23,3 +23,4 @@ Foram implementados:
 * Weighted Average Value Estimation
 * Initial Value Estimation
 * Gradient Bandits
+* Non Stationary Bandits de acordo com o Exercicio 2.4
