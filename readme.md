@@ -20,6 +20,7 @@ A organização do projeto busca manter os exemplos e experimentos relacionados 
 
 Projetos pessoais:
 
+* Example 3.8: Gridworld (pode ser um bom exemplo para primeiros experimetos) (Suton & Barto)
 * Jogo 1010 (Criar agente capaz de jogar o jogo)
 * Problema do Reator (Adaptado do exemplo 3.1 de Suton & Barto) 
 
