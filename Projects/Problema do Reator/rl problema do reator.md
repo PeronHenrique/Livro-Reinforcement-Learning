@@ -1,22 +1,44 @@
-# 1. Problema de Aprendizagem por Reforço — Operação de um Reator
+# Operação de um Reator - Formulação como Problema de RL
 
 Considere um sistema de produção química baseado em um reator no qual uma matéria-prima é convertida em um produto de interesse.
 
-A cada instante de tempo, o sistema recebe uma **quantidade fixa de energia disponível**. Essa energia deve ser distribuída entre diferentes atividades operacionais:
+Dada a necessidade de gestão de estoques e a disponibilidade de uma quantidade fixa de energia,
+a cada instante de tempo o operador deve decidir:
 
-- aquisição de matéria-prima;
-- aquecimento do reator;
-- ativação de sistemas auxiliares;
-- transporte do produto final.
-
-O objetivo do agente de Reinforcement Learning é determinar, a cada instante, como utilizar os recursos disponíveis para **maximizar o lucro acumulado ao longo do tempo**.
+- Quantidade de matéria prima a ser comprada;
+- Quantidade de matéria prima a ser colocada no reator;
+- Quantidade de produto a ser vendido;
+- Energia a ser aplicada no aquecimento do reator;
+- Energia destinada para a ativação de sistemas auxiliares.
 
 O problema é inspirado no exemplo 3.1 de bioreator apresentado em *Reinforcement Learning: An Introduction*, de Richard S. Sutton e Andrew G. Barto, mas constitui uma formulação própria para estudo.
 
+O objetivo principal do agente é encontrar uma política $\pi$ que maximize o lucro esperado ao longo do tempo:
+
+$$
+\pi^* = \arg\max_{\pi} \mathbb{E}_{\pi} \left[ \sum_{t=0}^{\infty} \gamma^t R_{t+1} \right]
+$$
+
+O agente deve aprender a equilibrar produção, eficiência, estoque, preços e utilização da energia.
+Uma estratégia que maximize a produção instantânea não necessariamente maximizará o lucro.
+
+Por exemplo:
+
+> Aumentar muito a temperatura pode produzir mais rapidamente, mas pode consumir mais energia e reduzir a eficiência.
+
+> Comprar muita matéria-prima quando o preço está alto pode ser pior do que utilizar o estoque existente e esperar uma oportunidade de compra mais favorável.
+
+> Vender muito produto quando seu preço está baixo pode ser menos vantajoso do que armazená-lo e transportá-lo posteriormente.
+
+O problema apresenta diversos trade-offs que tornam a tarefa adequada para Reinforcement Learning.
+
+* Estoque × Preço: Manter estoque permite aproveitar variações futuras de preço, mas aumenta o custo no curto prazo.
+* Temperatura × Eficiência: Temperaturas maiores podem aumentar a taxa de conversão, mas reduzir a eficiência.
+* Sistemas auxiliares × Energia: Aumentar o uso dos sistemas auxiliares pode melhorar a eficiência da conversão, mas consome parte da energia disponível.
 
 ## 2. Formulação como problema de Reinforcement Learning
 
-O problema pode ser modelado como um **Processo de Decisão de Markov (MDP)**:
+O problema pode ser modelado como um Processo de Decisão de Markov (MDP) contínuo:
 
 $$
 M = (S, A, P, R, \gamma)
@@ -32,91 +54,79 @@ onde:
 
 Em cada instante $t$, o agente observa o estado $S_t$, escolhe uma ação $A_t$, o sistema evolui para um novo estado $S_{t+1}$ e o agente recebe uma recompensa $R_{t+1}$.
 
+## 3. Representação do Estado
 
-# 3. Estado
-
-O estado deve representar as informações necessárias para que o agente consiga tomar uma decisão sobre a utilização da energia e a operação do processo.
-
-Um possível vetor de estado é:
+O estado deve representar as informações necessárias para que o agente consiga tomar uma decisão sobre a operação do processo e a utilização da energia.
+O vetor de estado é:
 
 $$
-S_t = [E_t, M_t, P_t, p^M_t, p^P_t, p^E_t T_t, AUX_t, C_t]
+S_t = [E^{disp}_t, M^{raw}_t, M^{react}_t, M^{prod}_t, p^{raw}_t, p^{prod}_t, p^E_t, T^{react}_t, AUX_t]
 $$
 
 onde:
 
 | Variável | Descrição |
 |---|---|
-| $E_t$ | Energia disponível no instante $t$ |
-| $M_t$ | Estoque de matéria-prima |
-| $P_t$ | Estoque de produto |
-| $p^M_t$ | Preço da matéria-prima |
-| $p^P_t$ | Preço do produto |
+| $E^{disp}_t$ | Energia disponível no instante $t$ |
+| $M^{raw}_t$ | Estoque de matéria-prima |
+| $M^{react}_t$ | Matéria-prima no reator |
+| $M^{prod}_t$ | Estoque de produto |
+| $p^{raw}_t$ | Preço da matéria-prima |
+| $p^{prod}_t$ | Preço do produto |
 | $p^E_t$ | Preço da energia |
-| $T_t$ | Temperatura atual do reator |
+| $T^{react}_t$ | Temperatura atual do reator |
 | $AUX_t$ | Nível atual dos sistemas auxiliares |
-| $C_t$ | Capacidade ou estado relacionado ao transporte |
 
-A representação final do estado pode ser expandida conforme novos aspectos do processo sejam incorporados.
-
-
-
-# 4. Ações
+## 4. Representação da Ação
 
 A ação representa as decisões tomadas pelo agente em cada instante.
-
-Uma possibilidade é utilizar uma ação vetorial:
+O vetor de ação é:
 
 $$
-A_t = [E^{raw}_t, E^{heat}_t, E^{aux}_t, E^{conersion}_t, E^{transport}_t]
+A_t = [q^{raw}_t, q^{react}_t, E^{heat}_t, E^{aux}_t, q^{sell}_t]
 $$
 
 onde:
 
-- $E^{raw}_t$ — energia destinada à aquisição de matéria-prima;
-- $E^{heat}_t$ — energia destinada ao aquecimento;
-- $E^{aux}_t$ — energia destinada aos sistemas auxiliares;
-- $E^{conersion}_t$ — energia destinada ao processo de conversão da matéria-prima;
-- $E^{transport}_t$ — energia destinada ao transporte.
+- $q^{raw}_t$ — Quantidade de matéria-prima para comprar;
+- $q^{react}_t$ — Quantidade de matéria-prima para ser colocada no reator;
+- $E^{heat}_t$ — Energia destinada ao aquecimento do reator;
+- $E^{aux}_t$ — Energia destinada aos sistemas auxiliares;
+- $q^{sell}_t$ — Quantidade de produto a ser vendido.
+
+
+## 5. Dinâmica do Sistema
+
+### 5.1. Energia
 
 A energia deve obedecer à restrição:
 
 $$
-E^{raw}_t + E^{heat}_t + E^{aux}_t + E^{conersion}_t + E^{transport}_t \leq E_t
+E_t = E^{heat}_t + E^{aux}_t \leq E^{disp}_t
 $$
 
-Caso toda a energia disponível deva ser utilizada:
+Caso a energia recebida através da ação seja superior ao total, o total aplicado aos sistemas é proporcional ao solicitado, respeitando a $E^{disp}_t$.
+Ainda uma penalidade é aplicada na recompensa, pela contratação de energia em excesso.
 
-$$
-E^{raw}_t + E^{heat}_t + E^{aux}_t + E^{conersion}_t + E^{transport}_t = E_t
-$$
-
-A ação também pode ser representada por valores-alvo, como temperatura e nível dos sistemas auxiliares, enquanto um controlador de nível inferior realiza a distribuição efetiva da energia.
-
-
-# 5. Aquecimento
+### 5.2. Aquecimento
 
 O aquecimento influencia a velocidade da conversão da matéria-prima em produto.
 
-De forma simplificada:
+De forma simplificada: 
 
 $$
-r_{conversion} = f(T_t)
+r_{conv} = f(T^{react}_t)
 $$
 
-onde $r_{conversion}$ representa a taxa de conversão.
-
-Aumentar a temperatura pode aumentar a velocidade de conversão, mas também pode reduzir a eficiência energética do processo.
-
-Uma representação simplificada poderia ser:
+Onde $r_{conv}$ representa a taxa de conversão da matéria prima no conversor, uma taxa de $1$ significa que toda a matéria prima no reator será convertida.
+Aumentar a temperatura aumenta a velocidade de conversão, mas também reduz a eficiência do processo. Onde $f(T_t)$ é tal que temperaturas elevadas apresentam menor eficiência:
 
 $$
 \eta^T_t = f(T_t)
 $$
 
-com uma relação em que temperaturas muito elevadas apresentam menor eficiência.
 
-A temperatura varia proporcionalmente com a diferença entre a energia aplicada e a energia perdida por radiação, a energia perdida por radiação é proporcional a temperatura:
+A temperatura varia proporcionalmente com a diferença entre a energia aplicada e a energia perdida por radiação. A energia perdida por radiação é proporcional a temperatura:
 
 $$
 T_{t+1} = T_t + C_{heating} (E^{heat}_t - C_{rad} T_t)  
@@ -129,35 +139,34 @@ $$
 $$
 
 
-# 6. Sistemas auxiliares
+### 5.3. Sistemas Auxiliares
 
-Os sistemas auxiliares têm como função aumentar a eficiência da geração do produto desejado.
-
-Podemos representar sua influência por:
+Os sistemas auxiliares têm como função aumentar a eficiência da geração do produto desejado. Onde $f(AUX_t)$ é maior que $1$ a partir de um determinado nível de utilização:
 
 $$
 \eta^{aux}_t = f(AUX_t)
 $$
 
-A produção efetiva pode então depender tanto da temperatura quanto dos sistemas auxiliares.
+A produção efetiva depende tanto da temperatura quanto dos sistemas auxiliares: $\eta_t = \eta^{aux}_t \times \eta^T_t$
 
-O sistema possui restrições físicas sobre a velocidade com que determinados parâmetros podem ser alterados e os valores máximos.
+Os sistemas auxiliares possuem restrições físicas sobre a velocidade com que determinados parâmetros podem ser alterados e os valores máximos.
 
 Para os sistemas auxiliares:
 
 $$
-|AUX_{t+1} - AUX_t| \leq \Delta AUX_{max}
+\Delta E^{aux}_t = E^{aux}_t - E^{aux}_{t-1}
 $$
 
 $$
-0 \leq E^{aux}_t \leq E^{aux}_{max} 
+AUX_{t} = 
+  \begin{cases}
+    E^{aux}_t & |Delta E^{aux}_t| \leq Delta E^{aux}_{max}\\
+    AUX_{t-1} +- Delta E^{aux}_{max} & |Delta E^{aux}_t| \geq Delta E^{aux}_{max}
+  \end{cases}
 $$
 
-Essas restrições tornam o problema mais próximo de um sistema físico real, no qual o agente não pode realizar mudanças instantâneas.
 
-
-
-# 7. Estoque de matéria-prima
+### 4.. Estoque de matéria-prima
 
 A matéria-prima pode ser comprada utilizando parte da energia disponível.
 
@@ -182,15 +191,11 @@ q^{raw}_t = {C_{raw}}{E^{raw}_t}
 $$
 
 
-# 8. Estoque de produto
+### 4.. Estoque de produto
 
 O produto gerado pelo reator é armazenado até que seja transportado e vendido.
 
 A dinâmica do estoque pode ser representada por:
-$$
-q^{conversion}_t = r_{conversion} E^{conersion}_t 
-$$
-
 
 $$
 Q_t = \eta^T_t \eta^{Aux}_t q^{conversion}_t
@@ -210,165 +215,32 @@ O transporte também possui uma capacidade limitada e consome energia.
 
 
 
-# 9. Preços
+### 5.. Preços
 
-Os preços da matéria-prima e do produto podem variar ao longo do tempo.
+Os preços da matéria-prima do produto e da energia podem variar ao longo do tempo.
 
-Assim:
+Os preços são determinados através de uma fórmula onde alguns componentes da forma $A sin(\alpha \* step + \theta)$. 
+Usando diferentes parâmetros para cada conjunto de preços. 
+Dessa forma os preços são continuos mas apresentam variações aparentemente aleatórias, sem dependência entre si. 
 
-$$
-p^M_t \neq p^M_{t+1}
-$$
-
-$$
-p^P_t \neq p^P_{t+1}
-$$
-
-$$
-p^E_t \neq p^E_{t+1}
-$$
-
-Essas variações introduzem uma oportunidade de planejamento.
-
-Por exemplo, o agente pode decidir comprar mais matéria-prima quando seu preço estiver baixo e armazená-la para utilização futura.
-
-Da mesma forma, pode ser vantajoso armazenar o produto quando o preço de venda estiver baixo e transportá-lo quando o preço estiver mais alto.
-
-Os preços podem ser:
-
-- determinados por uma série histórica;
-- gerados por um modelo estocástico;
-- definidos por um ambiente de simulação;
-- ou fornecidos externamente ao ambiente.
-
-
-
-# 10. Energia
-
-A quantidade de energia disponível em cada instante é limitada:
-
-$$
-E_t = E_{available}
-$$
-
-Essa energia deve ser alocada entre as diferentes atividades.
-
-O problema apresenta, portanto, uma competição entre:
-
-1. comprar matéria-prima;
-2. aumentar a temperatura;
-3. aumentar a eficiência através dos sistemas auxiliares;
-4. transportar o produto.
-
-Utilizar mais energia em uma atividade significa necessariamente ter menos energia disponível para as demais.
-
-
-# 11. Recompensa
+## 6. Recompensa
 
 A recompensa deve representar o objetivo econômico do sistema.
 
 Uma formulação inicial é:
 
 $$
-R_t = Revenue_t - Cost^{raw}_t - Cost^{energy}_t
+R_t = p^{prod}_t q^{prod}_t - p^{raw}_t q^{raw}_t - Cost^{energy}_t
 $$
 
-onde:
-
-- $Revenue_t$ representa a receita obtida pela venda do produto;
-- $Cost^{raw}_t$ representa o custo da matéria-prima;
-- $Cost^{energy}_t$ representa o custo associado à energia;
-
-e:
+onde o custo da energia sofre penalização no caso da ação solicitar mais que a quantidade disponivel:
 
 $$
-Revenue_t = p^P_t q^{transport}_t
-$$
-
-$$
-Cost^{raw}_t = p^M_t q^{raw}_t
-$$
-
-$$
-Cost^{energy}_t = p^E_t E_t
-$$
-
-O objetivo do agente será maximizar a recompensa acumulada:
-
-$$
-G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}
+Cost^{energy}_t = p^E_t min(E_t, E^{disp}_t) + 2p^E_t max(0, E_t - E^{disp}_t)
 $$
 
 
 
-# 12. Objetivo
-
-O objetivo principal do agente é encontrar uma política $\pi$ que maximize o lucro esperado ao longo do tempo:
-
-$$
-\pi^* = \arg\max_{\pi} \mathbb{E}_{\pi} \left[ \sum_{t=0}^{\infty} \gamma^t R_{t+1} \right]
-$$
-
-O agente deve aprender a equilibrar **produção, eficiência, estoque, preços e utilização da energia**.
-
-Uma estratégia que maximize a produção instantânea não necessariamente maximizará o lucro.
-
-Por exemplo:
-
-> Aumentar muito a temperatura pode produzir mais rapidamente, mas pode consumir mais energia e reduzir a eficiência.
-
-Da mesma forma:
-
-> Comprar muita matéria-prima quando o preço está alto pode ser pior do que utilizar o estoque existente e esperar uma oportunidade de compra mais favorável.
-
-E:
-
-> Vender muito produto quando seu preço está baixo pode ser menos vantajoso do que armazená-lo e transportá-lo posteriormente.
-
-O agente deverá aprender decisões como:
-
-### Produção
-
-- Quanto produzir em cada instante?
-- Qual temperatura utilizar?
-- Quanto investir em sistemas auxiliares?
-
-### Estoque
-
-- Quando comprar matéria-prima?
-- Quanto comprar?
-- Quando utilizar o estoque existente?
-- Quanto produto manter armazenado?
-
-### Transporte
-
-- Quando transportar o produto?
-- Quanto transportar?
-- É melhor vender imediatamente ou esperar uma condição de preço mais favorável?
-
-### Energia
-
-- Quanto da energia disponível deve ser destinada a cada atividade?
-- É melhor produzir mais agora ou preservar recursos para uma oportunidade futura?
-
-
-O problema apresenta diversos trade-offs que tornam a tarefa adequada para Reinforcement Learning.
-
-### Temperatura × Eficiência
-
-Temperaturas maiores podem aumentar a taxa de conversão, mas reduzir a eficiência.
-
-### Produção × Energia
-
-Produzir mais pode exigir maior consumo energético.
-
-### Estoque × Preço
-
-Manter estoque permite aproveitar variações futuras de preço, mas aumenta o custo no curto prazo.
-
-### Sistemas auxiliares × Energia
-
-Aumentar o uso dos sistemas auxiliares pode melhorar a eficiência da conversão, mas consome parte da energia disponível.
 
 
 
